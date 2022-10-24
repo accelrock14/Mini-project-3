@@ -5,10 +5,11 @@ from selenium.webdriver.common.by import By
 from webdriver_manager.chrome import ChromeDriverManager
 
 import time
+import Email
 
 
 def fun():
-    comic_list = ["Moebana", "Naruto"]
+    comic_list = ["WITCH WATCH", "Naruto"]
     history = ["Chapter 16: THE DEWA-NO-KUNI SCHOOL"]
 
     option = webdriver.ChromeOptions()
@@ -27,7 +28,7 @@ def fun():
 
     all_titles = driver1.find_elements(By.CLASS_NAME, "LastUpdatedTitle-module_allTitle_20kmL")
 
-    for titles in all_titles[0:10]:
+    for titles in all_titles[0:5]:
         title = titles.find_element(By.CLASS_NAME, "LastUpdatedTitle-module_title_3HJEY")
         # print(title.text)
         for comic in comic_list:
@@ -43,8 +44,8 @@ def fun():
                 if info.text == history[0]:
                     print("already read")
                 else:
+                    Email.mail(title.text, info.text, link)
                     print(info.text)
-                    history[0] = info.text
 
 
 fun()
