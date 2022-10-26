@@ -1,22 +1,21 @@
 import smtplib
-import ssl
 
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
 
-def mail(title, chapter, link):
+def mail(title, chapter, link, mail_id):
     sender_email = "1nh20cs096.jefersonx@gmail.com"
-    receiver_email = "acc31r0ck@gmail.com"
-    password = "svaoqvricildvyol"
-    subject = "Python email test"
-    body = title + " chapter " + chapter + " is out\nread now at:\n" + link
+    receiver_email = mail_id
+    password = "wsmjrjwdxzajjwfi"
+    subject = title
+    body = title + " " + chapter + " is out\nread now at:\n" + link
 
     message = MIMEMultipart()
     message["From"] = sender_email
     message["To"] = receiver_email
     message["Subject"] = subject
-    message["Bcc"] = receiver_email  # Recommended for mass emails
+    message["Bcc"] = receiver_email
 
     # Add body to email
     message.attach(MIMEText(body, "plain"))
