@@ -37,7 +37,7 @@ def manga_plus():
 
     try:
         # Get titles of comics with new chapters from the website
-        new_titles = WebDriverWait(driver, 5).until(
+        new_titles = WebDriverWait(driver, 10).until(
             ec.presence_of_all_elements_located((By.CLASS_NAME, "LastUpdatedTitle-module_allTitle_20kmL"))
         )
         for titles in new_titles[0:5]:
@@ -47,10 +47,10 @@ def manga_plus():
             # print(title.text)
             for comic in comic_list:
                 if title.text == comic[1]:
-                    print("found title match!")
+                    print("found title match! " + comic[1])
                     # getting image and link of the comic
                     link = titles.get_attribute("href")
-                    img = WebDriverWait(titles, 10).until(
+                    img = WebDriverWait(titles, 5).until(
                         ec.visibility_of_element_located((By.CSS_SELECTOR, "img[src]")))
                     # img = titles.find_element(By.CLASS_NAME, "LastUpdatedTitle-module_image_33lsO")
                     src = img.get_attribute("src")
@@ -86,7 +86,7 @@ def last_read(link, comic, src):
             print(recent_chapter.text)
             Email.comic_mail(comic[1], recent_chapter.text, link, emails, src)
         else:
-            print("already read")
+            print("already read " + comic[2])
     finally:
         driver.quit()
 
