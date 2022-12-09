@@ -12,7 +12,7 @@ def get_user():
     global user_id
     user_id = entry.get()
     if len(user_id) != 0 and user_id in user_list:
-        my_cursor.execute("SELECT DISTINCT c.cname, last_ch FROM comics as c JOIN emails as e ON c.cname = e.cname "
+        my_cursor.execute("SELECT DISTINCT c.cname, last_read FROM comics as c JOIN emails as e ON c.cname = e.cname "
                           "WHERE e.email_id = '" + user_id + "' ORDER BY c.last_read")
         global comic_table
         comic_table = my_cursor.fetchall()
@@ -22,6 +22,7 @@ def get_user():
         entry_label.pack_forget()
 
         print('welcome')
+        # <editor-fold desc="Add Widgets to Window">
         notebook.add(add_tab, text="Add")
         notebook.add(remove_tab, text="Remove")
         notebook.add(last_read_tab, text="Last Read")
@@ -58,6 +59,7 @@ def get_user():
             else:
                 last_read_date.insert(i, comic[1])
             i += 1
+        # </editor-fold>
     else:
         messagebox.showerror(title="ERROR", message="USER NOT FOUND!")
         print('user not found')
@@ -151,6 +153,7 @@ mydb = mysql.connector.connect(
 )
 my_cursor = mydb.cursor()
 
+# <editor-fold desc="Window Style">
 style_config = Style()
 style_config.theme_use('default')
 
@@ -164,6 +167,8 @@ style_config.configure('TNotebook.Tab',
                        padding=[10, 2],
                        borderwidth=.5)
 style_config.map('TNotebook.Tab', background=[('selected', '#4bbf45')])
+# </editor-fold>
+# <editor-fold desc="Login UI">
 entry_label = Label(window,
                     text="Enter EmailID:",
                     font=('Courier', '17', 'bold'),
@@ -184,7 +189,8 @@ submit_button = Button(window,
 entry_label.pack(side='left')
 entry.pack(side='left')
 submit_button.pack(side='right')
-
+# </editor-fold>
+# <editor-fold desc="GUI Widgets">
 notebook = ttk.Notebook(window)
 add_tab = Frame(notebook)
 remove_tab = Frame(notebook)
@@ -270,6 +276,8 @@ message_log4 = Label(last_canvas,
                      font=('Courier', '15', 'bold'),
                      bg='#317094',
                      fg='black')
+# </editor-fold>
+
 my_cursor.execute("SELECT * FROM users")
 user_table = my_cursor.fetchall()
 my_cursor.execute("SELECT * FROM comics")

@@ -5,7 +5,7 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as ec
 
 from webdriver_manager.chrome import ChromeDriverManager
-
+from datetime import date
 import mysql.connector
 import Email
 
@@ -63,6 +63,8 @@ def manga_plus():
 def last_read(link, comic, src):
     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=option)
     driver.get(link)
+    today = date.today()
+    d = today.strftime("%Y-%m-%d")
 
     my_cursor.execute("SELECT last_ch FROM comics where cname = '" + comic + "'")
     last_ch = my_cursor.fetchall()
@@ -82,7 +84,7 @@ def last_read(link, comic, src):
             emails = my_cursor.fetchall()
 
             my_cursor.execute("UPDATE comics SET last_ch = '" + recent_chapter.text +
-                              "' WHERE cname = '" + comic + "'")
+                              "', last_read = '" + d + "' WHERE cname = '" + comic + "'")
             mydb.commit()
 
             print(recent_chapter.text)
